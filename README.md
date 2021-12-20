@@ -1,4 +1,4 @@
-# Data_Mining
+# Association_Rule_Mining
 
 ## Documentation
-[v1](https://demo.hedgedoc.org/KpFPELg0QwOeD__JMR4SPg#)
+[v1](https://demo.hedgedoc.org/dpn2egnhQTardMIxJcVpsg?both)
