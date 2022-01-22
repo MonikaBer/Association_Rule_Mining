@@ -64,8 +64,6 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    string line;
-
     //transactions file
     ifstream transactionsFile(argv[1]);
     if (!transactionsFile.is_open()) {
@@ -73,6 +71,9 @@ int main(int argc, char** argv) {
         return 1;
     }
 
+    string line;
+
+    //transactions map: nr -> transaction
     map<int, set<int>> transactions;
     int nr = 1;
     while (getline(transactionsFile, line)) {
@@ -88,6 +89,8 @@ int main(int argc, char** argv) {
         return 1;
     }
 
+    //taxonomy map: item1 -> item2 (item1 below item2 in the taxonomy)
+    //item2 -> item3
     map<int, int> taxonomy;
     while (getline(taxonomyFile, line)) {
         pair<int, int> tax = splitStringToTaxonomyRow(line, ",");
@@ -96,6 +99,9 @@ int main(int argc, char** argv) {
 
     //showTransactions(transactions);
     //showTaxonomy(taxonomy);
+
+    //determine tidlists for itemsets and their supports
+
 
 
 

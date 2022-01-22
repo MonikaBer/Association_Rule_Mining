@@ -1,0 +1,10 @@
+1,reneta
+2,ligol
+3,klapsa
+4,konferencja
+5,jabłko
+6,gruszka
+7,owoc
+8,Jabłko
+9,Gruszka
+10,Owoc
