@@ -33,9 +33,18 @@ pair<int, int> splitStringToTaxonomyRow(string text, string delimiter) {
     return tax;
 }
 
+pair<int, string> splitStringToLabelsRow(string text, string delimiter) {
+    size_t pos = text.find(delimiter);
+    string token1 = text.substr(0, pos);
+    string token2 = text.substr(pos + delimiter.length(), text.length());
+    int intToken = stoi(token1);
+    pair<int, string> label = make_pair(intToken, token2);
+    return label;
+}
+
 void showTransactions(map<int, set<int>> transactions) {
     map<int, set<int>>::iterator mapIt;
-    cout << "TRANSACTIONS";
+    cout << "TRANSACTIONS\n";
     for (mapIt = transactions.begin(); mapIt != transactions.end(); ++mapIt) {
         set<int>::iterator setIt;
         cout << mapIt->first << ": ";
@@ -44,23 +53,36 @@ void showTransactions(map<int, set<int>> transactions) {
         }
         cout << endl;
     }
+    cout << endl;
 }
 
 void showTaxonomy(map<int, int> taxonomy) {
     map<int, int>::iterator it;
-    cout << "TAXONOMY";
+    cout << "TAXONOMY\n";
     int counter = 0;
     for (it = taxonomy.begin(); it != taxonomy.end(); ++it) {
         cout << it->first << ", " << it->second << endl;
         ++counter;
     }
-    cout << "Map length: " << counter << endl;
+    cout << "Map length: " << counter << endl << endl;
 }
+
+void showLabels(map<int, string> labels) {
+    map<int, string>::iterator it;
+    cout << "LABELS\n";
+    int counter = 0;
+    for (it = labels.begin(); it != labels.end(); ++it) {
+        cout << it->first << ", " << it->second << endl;
+        ++counter;
+    }
+    cout << "Map length: " << counter << endl << endl;
+}
+
 
 int main(int argc, char** argv) {
     Logger logger;
-    if ( argc != 3 ) {
-        logger << Logger::LogType::LOG_ERROR << "usage: ./main <path to transactions> <path to taxonomy>\n";
+    if ( argc != 4 ) {
+        logger << Logger::LogType::LOG_ERROR << "usage: ./main <path to transactions> <path to taxonomy> <path to labels>\n";
         return 1;
     }
 
@@ -97,8 +119,23 @@ int main(int argc, char** argv) {
         taxonomy[tax.first] = tax.second;
     }
 
-    //showTransactions(transactions);
-    //showTaxonomy(taxonomy);
+    //file with labels
+    ifstream labelsFile(argv[3]);
+    if (!labelsFile.is_open()) {
+        logger << Logger::LogType::LOG_ERROR << "Cannot open file: " << argv[3];
+        return 1;
+    }
+
+    //labels map: id -> label
+    map<int, string> labels;
+    while (getline(labelsFile, line)) {
+        pair<int, string> label = splitStringToLabelsRow(line, ",");
+        labels[label.first] = label.second;
+    }
+
+    showTransactions(transactions);
+    showTaxonomy(taxonomy);
+    showLabels(labels);
 
     //determine tidlists for itemsets and their supports
 
